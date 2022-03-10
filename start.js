@@ -2,17 +2,14 @@ require("dotenv").config();
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
-const fs = require("fs");
 
-const { exec } = require("child_process");
 const { default: axios } = require("axios");
 const { Telegraf } = require("telegraf");
+const { saveFile } = require("./functions/saveFile");
+const { print } = require("./functions/print")
 
 const {
     TELEGRAM_TOKEN,
-    SERVER_URL,
-    API_URL_LOGIN,
-    API_URL_GET_TOKEN,
     CLIENT_ID_KEY,
     CLIENT_SECRET_KEY,
     CARRIER_COMPANY_ID,
@@ -20,54 +17,17 @@ const {
     RECIEVER_EUP_ID,
     EUP_ID
 } = process.env;
+
 const bot = new Telegraf(TELEGRAM_TOKEN);
 
-let EUP_ID = "";
-let COMPANY_ID = "";
 let TOKEN;
 let TOKEN_TYPE = "Bearer";
 let TOKEN_TIME = 0;
 
-const printBdo = (file) => {
-    exec(`lp ${file}`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(error);
-            return;
-        }
-
-        if (stderr) {
-            console.error(stderr);
-            return;
-        }
-
-        console.log(stdout);
-    });
-};
-
 let date;
 let time;
 
-const saveFile = async (data, name, kpoId, callback) => {
-    fs.writeFile("./pdf/BDO.pdf", data, "base64", (error) => {
-        if (error) {
-            throw error;
-        } else {
-            console.log("base64 saved!");
-            fs.renameSync("./pdf/BDO.pdf", name, (error) => {
-                if (error) {
-                    throw error;
-                } else {
-                    console.log("Nazwa zmieniona!");
-                }
-            });
-            callback ? callback(name) : "";
-            console.log("Wydrukowano!");
-        }
-    });
-};
-
 bot.command("/create", async (ctx) => {
-    let amound, type, vehicleRegNumber;
     if (ctx.message.text == "/create") {
         ctx.reply(
             "Nie podano danych !!! \n /create [ ilość ] [ rodzaj (złom, wióry) ] [ Nr.rej ] [ godzina ] [ data ] "
@@ -147,7 +107,7 @@ bot.command("/create", async (ctx) => {
                 console.error(error);
             });
     } else {
-        ctx.reply(`Zostałeś wylogowany! \n Aby się zalogować napisz /login`);
+        ctx.reply(`Zostałeś wylogowany! \n Aby się zalogować wyślij komendę /login`);
     }
 });
 
@@ -158,7 +118,7 @@ bot.command("/login", (ctx) => {
     };
 
     if (TOKEN_TIME < Date.now()) {
-        axios.post( API_URL_GET_TOKEN,
+        axios.post( "https://rejestr-bdo.mos.gov.pl/api/WasteRegister/v1/Auth/generateEupAccessToken",
                 {
                     eupId: EUP_ID,
                     clientId: CLIENT_ID_KEY,
@@ -193,8 +153,8 @@ bot.command("/print", (ctx) => {
         };
 
         console.log("Generowanie wydruku dla ID: " + kpoId);
-        axios
-            .get(
+
+        axios.get(
                 `https://rejestr-bdo.mos.gov.pl/api/WasteRegister/DocumentService/v1/kpo/confirmation?KpoId=${kpoId}`,
                 config
             )
@@ -208,7 +168,7 @@ bot.command("/print", (ctx) => {
                     res.data,
                     `./pdf/BDO-${date}-${timeSave}_${kpoId}.pdf`,
                     kpoId,
-                    printBdo
+                    print
                 );
             })
             .catch((err) => {
