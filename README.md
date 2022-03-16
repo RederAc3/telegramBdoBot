@@ -1,6 +1,12 @@
 # BDOBot
-#### The script automates card generation and printing in the [BDO system](https://bdo.mos.gov.pl/).
-#### Works as a bot on a telegram.
+The script automates card generation and printing in the [BDO system](https://bdo.mos.gov.pl/). \
+Works as a bot on a telegram.
+
+---
+
+#### Work on the app for iOS and Android is coming to a close. Beta version soon
+
+##### You can see screenshots [here](/screenshots).
 
 ## Installation:
 ```
