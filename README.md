@@ -1,4 +1,4 @@
-# BDOBot
+# BDO-Bot
 The script automates card generation and printing in the [BDO system](https://bdo.mos.gov.pl/). \
 Works as a bot on a telegram.
 
