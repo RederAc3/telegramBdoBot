@@ -4,9 +4,7 @@ Works as a bot on a telegram.
 
 ---
 
-#### Work on the app for iOS and Android is coming to a close. Beta version soon
-
-##### You can see screenshots [here](/screenshots).
+#### Work on the app for iOS and Android is coming to a close. Beta version [here](https://github.com/RederAc3/BDO/releases)
 
 ## Installation:
 ```
