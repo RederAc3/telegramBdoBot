@@ -33,7 +33,7 @@ pm2 start start.js --name BDOBot
 <p>
 
 #### /print [ kpoId ]  
-##### Only works on Linux devices where the printer is connected.
+##### ❗ Only works on Linux devices where the printer is connected ❗
     
      /print 1a3fc0e0-274b-4eeb-8d6d-7cffb3cb3600
     
