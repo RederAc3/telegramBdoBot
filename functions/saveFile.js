@@ -1,22 +1,22 @@
-const fs = require("fs");
+import fs from "fs";
 
 const saveFile = async (data, name, kpoId, callback) => {
-    fs.writeFile("./pdf/BDO.pdf", data, "base64", (error) => {
-        if (error) {
-            throw error;
-        } else {
-            console.log("base64 saved!");
-            fs.renameSync("./pdf/BDO.pdf", name, (error) => {
-                if (error) {
-                    throw error;
-                } else {
-                    console.log("Nazwa zmieniona!");
-                }
-            });
-            callback ? callback(name) : "";
-            console.log("Wydrukowano!");
+    fs.writeFile("./pdf/BDO.pdf", data, "base64", (err) => {
+        if (err) {
+            console.log('[ saveFile ] - ', err.message);
+            throw err;
         }
+        
+        fs.renameSync("./pdf/BDO.pdf", name, (err) => {
+            if (err) {
+                console.log('[ renameFile ] - ', err.message);
+                throw err;
+            }
+        });
+        callback ? callback(name) : null;
+
+        console.log(`KPO ${kpoId} ZAPISANO JAKO PDF!`);
     });
 };
 
-module.exports = { saveFile };
+export default saveFile;

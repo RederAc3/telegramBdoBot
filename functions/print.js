@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+import { exec } from "child_process";
 
 const print = (file) => {
     exec(`lp ${file}`, (error, stdout, stderr) => {
@@ -16,4 +16,4 @@ const print = (file) => {
     });
 };
 
-module.exports = { print }
+export default print;

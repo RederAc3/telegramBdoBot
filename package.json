@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "telegram bot to create BDO for the anmet company",
   "main": "start.js",
+  "type": "module",
   "scripts": {
     "start": "node start.js",
     "dev": "nodemon start.js"
